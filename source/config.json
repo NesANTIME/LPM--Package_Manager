@@ -1,0 +1,31 @@
+{
+    "info":{
+        "version": "1.2.0",
+        "desarrollador": ["NesANTIME", "https://github.com/NesANTIME"],
+        "icon": [ "┬  ┌─┐┌┬┐", "│  ├─┘│││", "┴─┘┴  ┴ ┴" ]
+    },
+
+    "urls": {
+        "logic": {
+            "repo_oficial": "https://github.com/NesANTIME/lpm_packageTools.git",
+            "config_jsonRepo": "https://raw.githubusercontent.com/NesANTIME/lpm_packageTools/refs/heads/main/source/config.json"
+        },
+
+        "controller": [
+            ".lpm_config"
+        ],
+
+        "sources":{
+            "rutaHOME": "~/.local/share/lpm/",
+            "ruta_codigo": "~/.local/share/lpm/lpm_/",
+            "ruta_venv": "~/.local/share/lpm/lpm_/lpm_venv/",
+            "ruta_packages": "~/.local/share/lpm/packages/"
+        },
+
+        "exec": "~/.local/bin",
+
+        "url_servidores": [
+            "https://fastapi-production-c7c6.up.railway.app/"
+        ]
+    }
+}
