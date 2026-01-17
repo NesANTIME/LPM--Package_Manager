@@ -80,7 +80,7 @@ use_parser.set_defaults(func=use)
 
 
 remove_parser = subparsers.add_parser("uninstall", help="[!] Desinstalar un paquete.")
-remove_parser.add_argument("name")
+remove_parser.add_argument("package")
 install_parser.add_argument("--packet", metavar="VERSION")
 remove_parser.set_defaults(func=remove)
 
