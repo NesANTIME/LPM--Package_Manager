@@ -5,26 +5,40 @@ import base64
 import zipfile
 
 # ~~~ modulos internos de lpm ~~~
-from source.animations import BarAnimation, message_animation
-from source.modules.load_config import returnLocal_RutaPackagesLPM
-from source.modules.controller import addPackage_userConfig, add_path
-from source.modules.conections_core import autentificacion_server, peticiones_requests
+from source.animations.message import message
+from source.animations.bar import BarAnimation
+from source.modules.system_controller import func_userConfig
+from source.modules.chargate_config import returnLocal_RutaPackagesLPM
+from source.controller.conection_auth import autentificacion_server, requestsDelivery
+from source.modules.system_controller import add_package_at_funcConfig, add_path_package
 
 
 
 
 # ~~~ flujo principal de instalación ~~~
 def main_install(id_client, token_client, package):
+    mode_function = None
+
     if isinstance(package, list):
-        namePackage = package[0]
-        versionPackage = package[1]
-    else:
-        namePackage = package
-        versionPackage = "latest"
+        mode = package[0]
+        if (mode == None):
+            namePackage = package[1]
+            versionPackage = "latest"
+
+        elif (mode == "mode_v"):
+            namePackage = package[1]
+            versionPackage = package[2]
+
+        elif (mode == "mode_force"):
+            namePackage = package[1]
+            versionPackage = "latest"
+            mode_function = True
+
+
 
     session_id = autentificacion_server(id_client, token_client, "ins")
 
-    data = peticiones_requests(
+    data = requestsDelivery(
         {
             "client_uuidSession": session_id,
             "client_namePackage": namePackage,
@@ -38,13 +52,24 @@ def main_install(id_client, token_client, package):
     version_pkg = data.get("version_pkg")
     main_pkg = data.get("__main__")
 
-    message_animation(f"[!] Consultando por el paquete [{namePackage}]", f"[ OK ] El paquete existe!", 2, 4)
+    message(f"[!] Consultando por el paquete [{namePackage}]", f"[ OK ] El paquete existe!", 2, 4)
 
     print(f"\n{' '*6}Package{' '*6}: {data.get('name_pkg')}\n{' '*6}Version{' '*6}: {version_pkg} \n{' '*6}Developer{' '*4}: {data.get('creador')}")
 
     if (not version_pkg) or (not main_pkg):
         print(f"{' '*6}[ ERROR ] Información incompleta del paquete")
         sys.exit(1)
+
+
+    config = func_userConfig("r", None)
+
+    package_install = config.get("package_install", {})
+    package_data = package_install.get(namePackage, {})
+    versions = package_data.get("version_instaladas", [])
+    if (version_pkg in versions):
+        print(f"{' '*4}[!] El paquete ya está instalado!")
+        if (mode_function != True):
+            sys.exit(1)
 
 
     validation = input(f"\n{' '*4}[!] Desea continuar a la instalacion del package? (y/n): ").strip().lower()
@@ -59,7 +84,7 @@ def main_install(id_client, token_client, package):
 
 
     try:
-        data = peticiones_requests(
+        data = requestsDelivery(
             {
                 "client_uuidSession": session_id,
                 "client_namePackage": namePackage,
@@ -87,10 +112,13 @@ def main_install(id_client, token_client, package):
 
         os.remove(zip_path)
 
-        bar.new_valor(60, "Cargando en el path...")
+        bar.new_valor(60, "Cargando en lpm...")
 
-        addPackage_userConfig(namePackage, version_pkg, main_pkg)
-        add_path(namePackage, version_pkg, main_pkg)
+        add_package_at_funcConfig(namePackage, version_pkg, main_pkg)
+
+        bar.new_valor(90, "Cargando en el path...")
+
+        add_path_package(namePackage, version_pkg, main_pkg)
 
         bar.new_valor(100, "Completado...")
 

@@ -4,8 +4,8 @@ import subprocess
 
 
 # ~~~ funciones internas de lpm ~~~
-from source.modules.controller import func_userConfig
-from source.modules.load_config import returnLocal_RutaPackagesLPM
+from source.modules.system_controller import func_userConfig
+from source.modules.chargate_config import returnLocal_RutaPackagesLPM
 
 
 # ~~~~ VARIABLES GLOBALES ~~~~

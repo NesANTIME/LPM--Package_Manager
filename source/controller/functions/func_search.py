@@ -1,14 +1,13 @@
-
 # ~~~ modulos internos de lpm ~~~
-from source.animations import message_animation
-from source.modules.conections_core import autentificacion_server, peticiones_requests
+from source.animations.message import message
+from source.controller.conection_auth import autentificacion_server, requestsDelivery
 
 
 
 def main_search(id_client, token_client, name_package):
     session_id = autentificacion_server(id_client, token_client, "sea")
 
-    data = peticiones_requests(
+    data = requestsDelivery(
         { 
             "client_uuidSession": session_id, 
             "client_namePackage": name_package
@@ -17,7 +16,7 @@ def main_search(id_client, token_client, name_package):
         "fS_search"
     )
 
-    message_animation(f"[!] Consultando por el paquete [{name_package}]", f"[ OK ] El paquete existe!", 2, 4)
+    message(f"[!] Consultando por el paquete [{name_package}]", f"[ OK ] El paquete existe!", 2, 4)
 
     version_package = f"{data.get('version_pkg')} (lastest)"
 

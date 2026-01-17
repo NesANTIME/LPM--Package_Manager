@@ -1,28 +1,28 @@
 #!/bin/sh
 set -e
 
-echo "[lpm] package manager by nesantime"
+echo "[lpm package manager] by nesantime"
 
 
 if [ -n "$TERMUX_VERSION" ] || [ -d "/data/data/com.termux" ]; then
-    INSTALL_BASE="$HOME/.local/share/lpm/lpm_"
     BIN_DIR="$PREFIX/bin"
     MODE="USER (TERMUX)"
 else
-    INSTALL_BASE="$HOME/.local/share/lpm/lpm_"
     BIN_DIR="$HOME/.local/bin"
     MODE="USER LINUX"
 fi
 
-echo "[lpm] Mode: $MODE"
+INSTALL_BASE="$HOME/.local/share/lpm/lpm_"
+echo "[lpm] Modo de instalacion: $MODE"
 
 command -v python3 >/dev/null 2>&1 || {
-    echo "[ERROR] python3 no está instalado"
+    echo "[lpm] [ERROR] python3 no está instalado."
     exit 1
 }
 
 mkdir -p "$INSTALL_BASE"
 mkdir -p "$BIN_DIR"
+
 
 echo "[lpm] Copiando archivos..."
 cp -r source "$INSTALL_BASE/"
@@ -35,7 +35,7 @@ VENV_PY="$INSTALL_BASE/lpm_venv/bin/python"
 
 echo "[lpm] Instalando dependencias..."
 "$VENV_PY" -m pip install --upgrade pip
-"$VENV_PY" -m pip install requests brotli
+"$VENV_PY" -m pip install requests brotli keyring
 
 echo "[lpm] Creando launcher..."
 

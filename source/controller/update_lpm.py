@@ -4,69 +4,18 @@ import shutil
 import tempfile
 import subprocess
 
-# ~~~ modulos internos de lpm ~~~
-from source.logics.func_use import main_use
-from source.logics.func_list import main_list
-from source.logics.func_remove import main_remove
-from source.logics.func_search import main_search
-from source.logics.func_update import main_update
-from source.logics.func_install import main_install
+from source.modules.chargate_config import load_configRepo, load_config
 
-from source.animations import BarAnimation
-from source.modules.controller import verify_userConfig
-from source.modules.load_config import load_config, load_configRepo, check_newVersion
-
-
-
-# ~~ VARIABLES GLOBALES ~~
-CONFIG_JSON = load_config()
-
-
-# ~~~~ Funciones Principales ~~~~
-
-def verify_credentials(function, name_package):
-
-    id_client, token_client = verify_userConfig()
-    
-    if (function == "install"):
-        main_install(id_client, token_client, name_package)
-    elif (function == "search"):
-        main_search(id_client, token_client, name_package)
-    elif (function == "list"):
-        main_list()
-    elif (function == "update"):
-        main_update(id_client, token_client)
-    elif (function == "remove"):
-        main_remove()
-    elif (function == "use"):
-        main_use(name_package)
-
-
-
-def lpm_version():
-    version = CONFIG_JSON["info"]["version"]
-    info_newVersion = check_newVersion()
-
-    print(f"{' '*4}Version: {version}")
-
-    if (info_newVersion != False):
-        print(f"{' '*4} {info_newVersion}")
-    
-    print(f"{' '*6}lpm packages by nesantime")
-    
-
-
-
-def lpm_upgrade(mode):
-    # cargar BD
+def System_upgradeLPM(mode):
+    config_json = load_config()
     config_jsonREPO = load_configRepo()
 
-    version_local = CONFIG_JSON['info']['version']
+    version_local = config_json['info']['version']
     version_lastest = config_jsonREPO['info']['version']
 
     # rutas
-    ruta_principal = os.path.expanduser(CONFIG_JSON['urls']['sources']['rutaHOME'])
-    ruta_urlOficialLPM = CONFIG_JSON["urls"]["logic"]["repo_oficial"]
+    ruta_principal = os.path.expanduser(config_json['urls']['sources']['rutaHOME'])
+    ruta_urlOficialLPM = config_json["urls"]["logic"]["repo_oficial"]
 
 
     print(f"{' '*4}[!] Iniciando Autoinstalacion de LPM [!]")
@@ -122,7 +71,7 @@ def lpm_upgrade(mode):
         subprocess.run(["python3", "-m", "venv", dir_LPMvenv], check=True)
 
         venv_python = os.path.join(dir_carLPM, "lpm_venv", "bin", "python")
-        subprocess.run([venv_python, "-m", "pip", "install", "--upgrade", "requests", "brotli"], check=True)
+        subprocess.run([venv_python, "-m", "pip", "install", "--upgrade", "requests", "brotli", "keyring"], check=True)
 
         print(f"{' '*4}[ OK ] Actualizado correctamente")
 

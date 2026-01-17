@@ -1,5 +1,5 @@
 # ~~~ funciones internas de lpm ~~~
-from source.modules.controller import func_userConfig
+from source.modules.system_controller import func_userConfig
 
 
 def main_list():

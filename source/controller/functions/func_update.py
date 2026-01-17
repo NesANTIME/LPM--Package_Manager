@@ -3,10 +3,10 @@ import sys
 import base64
 import zipfile
 
-from source.animations import BarAnimation
-from source.logics.func_install import addPackage
-from source.modules.controller import func_userConfig
-from source.modules.conections_core import autentificacion_server, peticiones_requests
+from source.animations.bar import BarAnimation
+from source.modules.system_controller import func_userConfig
+from source.modules.system_controller import add_package_at_funcConfig
+from source.controller.conection_auth import autentificacion_server, requestsDelivery
 
 
 
@@ -20,7 +20,7 @@ def main_update(id_client, token_client):
 
     print(f"    [!] Verificando versiones de los paquetes instalados!\n")
 
-    result = peticiones_requests(
+    result = requestsDelivery(
         {
             "client_uuidSession": session_id,
             "client_listPackages": local_packages
@@ -66,7 +66,7 @@ def main_update(id_client, token_client):
 
         try: 
 
-            data = peticiones_requests(
+            data = requestsDelivery(
                     {
                         "client_uuidSession": session_id,
                         "client_listPackages": [name]
@@ -98,7 +98,7 @@ def main_update(id_client, token_client):
             contenido = base64.b64decode(contenido_base64)
 
             print()
-            #bar_animation(4, f"Instalando {name}... ")
+            bar = BarAnimation(f"Instalando {name}...", "clasic")
 
             with open(zip_path, "wb") as f:
                 f.write(contenido)
@@ -106,9 +106,13 @@ def main_update(id_client, token_client):
             with zipfile.ZipFile(zip_path, "r") as zip_ref:
                 zip_ref.extractall(destino)
 
+            bar.new_valor(70, "Actualizando el path...")
+
             os.remove(zip_path)
 
-            addPackage(name, latest_version, main_package)
+            add_package_at_funcConfig(name, latest_version, main_package)
+
+            bar.new_valor(100, "Completado")
 
             print(f"\n    [ OK ] Name : {nombre_archivo} - Size : {tamaño_bytes} bytes\n")
 

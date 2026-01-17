@@ -1,14 +1,14 @@
 {
     "info":{
-        "version": "1.2.0",
+        "version": "2.0.0",
         "desarrollador": ["NesANTIME", "https://github.com/NesANTIME"],
         "icon": [ "┬  ┌─┐┌┬┐", "│  ├─┘│││", "┴─┘┴  ┴ ┴" ]
     },
 
     "urls": {
         "logic": {
-            "repo_oficial": "https://github.com/NesANTIME/lpm_packageTools.git",
-            "config_jsonRepo": "https://raw.githubusercontent.com/NesANTIME/lpm_packageTools/refs/heads/main/source/config.json"
+            "repo_oficial": "https://github.com/NesANTIME/LPM--Package_Manager.git",
+            "config_jsonRepo": "https://raw.githubusercontent.com/NesANTIME/LPM--Package_Manager/refs/heads/main/source/config.json"
         },
 
         "controller": [

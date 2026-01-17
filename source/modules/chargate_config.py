@@ -27,23 +27,6 @@ def load_configRepo():
         raise RuntimeError(f"[!] Error de red: {e}")
     except ValueError:
         raise RuntimeError("[!] El contenido descargado no es un JSON válido")
-    
-    
-
-
-# ~~~ Funciones auxiliares externas ~~~
-def check_newVersion():
-    config_json = load_config()
-    config_jsonRepo = load_configRepo()
-    
-
-    version_local = config_json["info"]["version"]
-    version_lastest = config_jsonRepo["info"]["version"]
-
-    if (version_local != version_lastest):
-        return f"[!] Nueva version {version_lastest} disponible!"
-    
-    return False
 
 
 
