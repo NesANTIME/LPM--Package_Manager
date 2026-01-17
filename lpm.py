@@ -11,13 +11,15 @@ from source.controller.update_lpm import System_upgradeLPM
 
 def install(args):
     icon()
-    name_package = [None, args.package]
-
+    name_package = { "mode": "normal", "package": args.package, "version": "latest" }
     if (args.v):
-        name_package = ["mode_v", name_package, args.v]
-    elif (args.force):
-        name_package = ["mode_force", name_package]
+        name_package["mode"] = "mode_v"
+        name_package["version"] = args.v
 
+    if (args.force):
+        name_package["mode"] = "mode_force"
+
+    print(name_package)
     init_("install", name_package)
 
 

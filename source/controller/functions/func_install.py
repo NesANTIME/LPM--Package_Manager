@@ -17,24 +17,15 @@ from source.modules.system_controller import add_package_at_funcConfig, add_path
 
 # ~~~ flujo principal de instalación ~~~
 def main_install(id_client, token_client, package):
-    mode_function = None
+    mode_force = False
 
-    if isinstance(package, list):
-        mode = package[0]
-        if (mode == None):
-            namePackage = package[1]
-            versionPackage = "latest"
-
-        elif (mode == "mode_v"):
-            namePackage = package[1]
-            versionPackage = package[2]
-
-        elif (mode == "mode_force"):
-            namePackage = package[1]
-            versionPackage = "latest"
-            mode_function = True
+    mode_function = package.get("mode")
+    namePackage = package.get("package")
+    versionPackage = package.get("version")
 
 
+    if (mode_function == "mode_force"):
+        mode_force = True 
 
     session_id = autentificacion_server(id_client, token_client, "ins")
 
@@ -51,6 +42,7 @@ def main_install(id_client, token_client, package):
 
     version_pkg = data.get("version_pkg")
     main_pkg = data.get("__main__")
+    venv_ = data.get("venv-plugins")
 
     message(f"[!] Consultando por el paquete [{namePackage}]", f"[ OK ] El paquete existe!", 2, 4)
 
@@ -68,7 +60,7 @@ def main_install(id_client, token_client, package):
     versions = package_data.get("version_instaladas", [])
     if (version_pkg in versions):
         print(f"\n{' '*4}[!] El paquete ya está instalado!")
-        if (mode_function != True):
+        if (mode_force != True):
             sys.exit(1)
 
 
@@ -102,7 +94,6 @@ def main_install(id_client, token_client, package):
         bar = BarAnimation(f"Instalando package {namePackage}...", "clasic")
         bar.new_valor(0)
 
-        venv_ = data["venv-plugins"]
         contenido = base64.b64decode(data["contenido_base64"])
 
         with open(zip_path, "wb") as f:
@@ -119,7 +110,8 @@ def main_install(id_client, token_client, package):
 
         bar.new_valor(90, "Cargando en el path...")
 
-        add_path_package(namePackage, version_pkg, main_pkg, venv_)
+        print(venv_)
+        #add_path_package(namePackage, version_pkg, main_pkg, venv_)
 
         bar.new_valor(100, "Completado...")
 
