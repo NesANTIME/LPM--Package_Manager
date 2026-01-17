@@ -39,7 +39,7 @@ def use(args):
 def remove(args):
     package = [args.package, None]
 
-    if (args.packet):
+    if hasattr(args, "packet") and args.packet:
         package = [args.package, args.packet]
 
     init_("remove", package)
@@ -53,8 +53,8 @@ def remove(args):
 
 parser = argparse.ArgumentParser( prog="lpm", description="Administrador de paquetes by NesAnTime.")
 
-parser.add_argument('--upgrade-now', action='store_true', help='[!] Actualizar lpm desde el repositorio!')
-parser.add_argument('--upgrade-now-force', action='store_true', help='[!] Forzar actualizar lpm desde el repositorio')
+parser.add_argument('--upgrade-now', dest='upgrade_now', action='store_true', help='[!] Actualizar lpm desde el repositorio!')
+parser.add_argument('--upgrade-now-force', dest='upgrade_now_force', action='store_true', help='[!] Forzar actualizar lpm desde el repositorio')
 parser.add_argument('--restart', action='store_true', help='[!] Reiniciar archivos e instalaciones de lpm')
 parser.add_argument('--version', action='store_true', help='[!] Mostrar version LPM!')
 
@@ -81,7 +81,7 @@ use_parser.set_defaults(func=use)
 
 remove_parser = subparsers.add_parser("uninstall", help="[!] Desinstalar un paquete.")
 remove_parser.add_argument("package")
-install_parser.add_argument("--packet", metavar="VERSION")
+remove_parser.add_argument("--packet", metavar="VERSION")
 remove_parser.set_defaults(func=remove)
 
  
