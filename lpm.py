@@ -15,7 +15,7 @@ def install(args):
 
     if (args.v):
         name_package = ["mode_v", name_package, args.v]
-    if (args.force):
+    elif (args.force):
         name_package = ["mode_force", name_package]
 
     init_("install", name_package)
@@ -25,7 +25,7 @@ def search(args):
     icon()
     init_("search", args.package)
 
-def list(args):
+def list_packages(args):
     icon()
     init_("list", None)
 
@@ -58,8 +58,8 @@ subparsers = parser.add_subparsers(dest="command")
 
 install_parser = subparsers.add_parser("install", help="[!] Instala un paquete.")
 install_parser.add_argument("package")
-install_parser.add_argument("force", help="Forzar la instalacion del paquete", default=None)
-install_parser.add_argument("v", help="Versión específica del paquete", default=None)
+install_parser.add_argument("--force", action="store_true")
+install_parser.add_argument("--v", metavar="VERSION")
 install_parser.set_defaults(func=install)
 
 
@@ -80,7 +80,7 @@ remove_parser.set_defaults(func=remove)
 
  
 list_parser = subparsers.add_parser("list", help="[!] Listar los paquetes instalados.")
-list_parser.set_defaults(func=list)
+list_parser.set_defaults(func=list_packages)
 
 
 update_parser = subparsers.add_parser("update", help="[!] Actualizar todos los paquetes instalados.")
