@@ -22,7 +22,7 @@
             "ruta_packages": "~/.local/share/lpm/packages/"
         },
 
-        "exec": "~/.local/bin",
+        "exec": "~/.local/bin/",
 
         "url_servidores": [
             "https://lpm-server-scew.onrender.com/"

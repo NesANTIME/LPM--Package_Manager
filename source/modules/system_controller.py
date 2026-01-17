@@ -45,13 +45,12 @@ def add_path_package(package_name, version, entrypoint, venv_plugins):
 
     subprocess.run(["python3", "-m", "venv", venv], check=True)
     venv_python = os.path.join(venv, "bin", "python")
-    command = [venv_python, "-m", "pip", "install", "--upgrade"]
 
-    if (venv_plugins):
-        for i in venv_plugins:
-            command.append(i)
+    subprocess.run([venv_python, "-m", "pip", "install", "--upgrade", "pip"], check=True)
 
-        subprocess.run(command, check=True)
+    if venv_plugins:
+        subprocess.run([venv_python, "-m", "pip", "install", "--upgrade", *venv_plugins], check=True)
+
 
 
     launcher_path = os.path.join(bin_dir, package_name)

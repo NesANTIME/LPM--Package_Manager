@@ -19,7 +19,6 @@ def install(args):
     if (args.force):
         name_package["mode"] = "mode_force"
 
-    print(name_package)
     init_("install", name_package)
 
 
