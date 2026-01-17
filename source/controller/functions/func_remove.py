@@ -49,7 +49,7 @@ def main_remove(name_package):
             if (version in data["package_install"][name]["version_instaladas"]):
                 data["package_install"][name]["version_instaladas"].remove(version)
 
-                use_version = data["package_install"][name_package]["version_instaladas"][-1]
+                use_version = data["package_install"][name]["version_instaladas"][-1]
                 data["package_install"][name]["version_use"] = use_version
 
                 main_pkg = data["package_install"][name]["__main-use__"]
