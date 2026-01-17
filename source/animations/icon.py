@@ -1,4 +1,4 @@
-from source.modules.load_config import load_config, load_configRepo
+from source.modules.chargate_config import load_config, load_configRepo
 
 # funciones internas de icon()
 def check_newVersion():
