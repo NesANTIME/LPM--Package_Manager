@@ -58,8 +58,8 @@ subparsers = parser.add_subparsers(dest="command")
 
 install_parser = subparsers.add_parser("install", help="[!] Instala un paquete.")
 install_parser.add_argument("package")
-install_parser.add_argument("--force", help="Forzar la instalacion del paquete", default=None)
-install_parser.add_argument("--v", help="Versión específica del paquete", default=None)
+install_parser.add_argument("force", help="Forzar la instalacion del paquete", default=None)
+install_parser.add_argument("v", help="Versión específica del paquete", default=None)
 install_parser.set_defaults(func=install)
 
 

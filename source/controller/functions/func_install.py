@@ -67,7 +67,7 @@ def main_install(id_client, token_client, package):
     package_data = package_install.get(namePackage, {})
     versions = package_data.get("version_instaladas", [])
     if (version_pkg in versions):
-        print(f"{' '*4}[!] El paquete ya está instalado!")
+        print(f"\n{' '*4}[!] El paquete ya está instalado!")
         if (mode_function != True):
             sys.exit(1)
 
