@@ -4,21 +4,19 @@ import time
 
 # funciones internas de bar
 def type_style(style):
-    if (style == "clasic"):
+    if style == "clasic":
         return "■", "□"
-    elif (style == "modern"):
+    elif style == "modern":
         return "▰", "▱"
     else:
         raise ValueError("[!] [ERROR] Error interno de LPM.")
 
 
-
-
 # Clases internas de animations
 class BarAnimation:
-    def __init__(self, text, type):
-        self.style = type_style(type)
-        self.type = type
+    def __init__(self, text, style):
+        self.type = style                 
+        self.style = type_style(style)  
         self.text = text
         self.margen = 4
         self.carga = 0
@@ -31,6 +29,7 @@ class BarAnimation:
 
         if textSend is not None:
             self.text = textSend
+
         self.render(self.text)
 
     def barra(self):
@@ -41,11 +40,11 @@ class BarAnimation:
         return completo * llenos + incompleto * vacios
 
     def render(self, textSend):
-        if self.style == "clasic":
+        if self.type == "clasic":
             text = f"\r{' ' * self.margen}[{self.barra()}] {self.carga}%  • {textSend}"
         else:
             text = f"\r{' ' * self.margen}{textSend} {self.barra()} {self.carga}%"
 
-        sys.stdout.write("\r" + " " * 80)
+        sys.stdout.write("\r" + " " * 100)
         sys.stdout.write(text)
         sys.stdout.flush()
