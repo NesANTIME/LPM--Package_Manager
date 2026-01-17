@@ -37,7 +37,12 @@ def use(args):
     init_("use", [args.package, args.args_script])
 
 def remove(args):
-    print(f"Desinstalando el paquete {args.name}...")
+    package = [args.package, None]
+
+    if (args.packet):
+        package = [args.package, args.packet]
+
+    init_("remove", package)
 
 #def delivery_config():
 #    print("En Desarrollo")
@@ -74,8 +79,9 @@ use_parser.add_argument('args_script', nargs=argparse.REMAINDER, help='Argumento
 use_parser.set_defaults(func=use)
 
 
-remove_parser = subparsers.add_parser("remove", help="[!] Desinstalar un paquete.")
+remove_parser = subparsers.add_parser("uninstall", help="[!] Desinstalar un paquete.")
 remove_parser.add_argument("name")
+install_parser.add_argument("--packet", metavar="VERSION")
 remove_parser.set_defaults(func=remove)
 
  

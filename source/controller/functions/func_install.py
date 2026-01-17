@@ -102,6 +102,7 @@ def main_install(id_client, token_client, package):
         bar = BarAnimation(f"Instalando package {namePackage}...", "clasic")
         bar.new_valor(0)
 
+        venv_ = data["venv-plugins"]
         contenido = base64.b64decode(data["contenido_base64"])
 
         with open(zip_path, "wb") as f:
@@ -118,7 +119,7 @@ def main_install(id_client, token_client, package):
 
         bar.new_valor(90, "Cargando en el path...")
 
-        add_path_package(namePackage, version_pkg, main_pkg)
+        add_path_package(namePackage, version_pkg, main_pkg, venv_)
 
         bar.new_valor(100, "Completado...")
 

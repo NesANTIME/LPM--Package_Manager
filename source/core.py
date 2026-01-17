@@ -36,7 +36,7 @@ def init_(function, name_package):
         main_update(id_client, token_client)
 
     elif (function == "remove"):
-        main_remove()
+        main_remove(name_package)
 
     elif (function == "use"):
         main_use(name_package)
@@ -47,8 +47,8 @@ def lpm_restart():
     print(f"{' '*6}[!] Advertencia: este programa eliminara los siguientes directorios o archivos!")
     print(f"{' '*7}=> Archivos de configuracion de LPM\n{' '*7}=> Todos los paquetes intalados via LPM")
 
-    validate = input("[*] Desea realizar los cambios en el disco y lpm? (y/n): ")
-    if (validate != "y"):
+    validate = input("[*] Desea realizar los cambios en el disco y lpm? (y/n): ").strip().lower()
+    if (validate not in ("y", "s")):
         print(f"{' '*6}[!] Operacion cancelada por el usuario!")
 
     else:

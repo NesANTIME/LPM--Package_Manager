@@ -1,5 +1,6 @@
 import os
 import stat
+import subprocess
 
 from source.controller.credentials.credential import func_userConfig, return_userConfig
 from source.modules.chargate_config import returnLocal_RutaPATH, returnLocal_RutaPackagesLPM
@@ -29,11 +30,12 @@ def add_package_at_funcConfig(name_package, version_package, main):
 
 
 
-def add_path_package(package_name, version, entrypoint):
+def add_path_package(package_name, version, entrypoint, venv_plugins):
     bin_dir = os.path.expanduser(returnLocal_RutaPATH())
     os.makedirs(bin_dir, exist_ok=True)
 
     src = os.path.join(os.path.expanduser(returnLocal_RutaPackagesLPM()), package_name, version, entrypoint)
+    venv = os.path.join(os.path.expanduser(returnLocal_RutaPackagesLPM()), package_name, version, f"lpm_venv{package_name}")
 
     if not os.path.isfile(src):
         raise FileNotFoundError(f"Entrypoint no encontrado: {src}")
@@ -41,7 +43,16 @@ def add_path_package(package_name, version, entrypoint):
     if not os.access(src, os.X_OK):
         os.chmod(src, 0o755)
 
-    venv_python = os.path.expanduser("~/.local/share/lpm/packages/airsend/1.0.4/lpm_venv/bin/python")
+    subprocess.run(["python3", "-m", "venv", venv], check=True)
+    venv_python = os.path.join(venv, "bin", "python")
+    command = [venv_python, "-m", "pip", "install", "--upgrade"]
+
+    if (venv_plugins):
+        for i in venv_plugins:
+            command.append(i)
+
+        subprocess.run(command, check=True)
+
 
     launcher_path = os.path.join(bin_dir, package_name)
 
