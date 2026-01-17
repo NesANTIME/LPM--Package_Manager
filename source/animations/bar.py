@@ -17,7 +17,7 @@ def type_style(style):
 # Clases internas de animations
 class BarAnimation:
     def __init__(self, text, type):
-        self.style = type_style()
+        self.style = type_style(type)
         self.type = type
         self.text = text
         self.margen = 4
@@ -34,7 +34,7 @@ class BarAnimation:
         self.render(self.text)
 
     def barra(self):
-        completo, incompleto = self.estilo
+        completo, incompleto = self.style
         total = 20
         llenos = min(self.carga // 5, total)
         vacios = total - llenos
@@ -42,9 +42,9 @@ class BarAnimation:
 
     def render(self, textSend):
         if self.style == "clasic":
-            text = f"\r{' ' * self.espacio}[{self.barra()}] {self.carga}%  • {textSend}"
+            text = f"\r{' ' * self.margen}[{self.barra()}] {self.carga}%  • {textSend}"
         else:
-            text = f"\r{' ' * self.espacio}{textSend} {self.barra()} {self.carga}%"
+            text = f"\r{' ' * self.margen}{textSend} {self.barra()} {self.carga}%"
 
         sys.stdout.write("\r" + " " * 80)
         sys.stdout.write(text)
