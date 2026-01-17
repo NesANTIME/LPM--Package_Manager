@@ -110,8 +110,7 @@ def main_install(id_client, token_client, package):
 
         bar.new_valor(90, "Cargando en el path...")
 
-        print(venv_)
-        #add_path_package(namePackage, version_pkg, main_pkg, venv_)
+        add_path_package(namePackage, version_pkg, main_pkg, venv_)
 
         bar.new_valor(100, "Completado...")
 
