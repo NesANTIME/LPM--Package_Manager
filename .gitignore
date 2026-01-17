@@ -1,8 +1,14 @@
-vevn/.
-source/__pycache__/.
-source/animations/__pycache__/.
-source/__pycache__/.
-source/controller/__pycache__/.
-source/controller/credentials/__pycache__/.
-source/controller/functions/__pycache__/.
-source/modules/__pycache__/.
+# Entornos virtuales
+venv/
+.vevn/
+.env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Cache en subdirectorios
+source/**/__pycache__/
+source/**/**/*.pyc
