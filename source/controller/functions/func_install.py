@@ -99,7 +99,7 @@ def main_install(id_client, token_client, package):
             sys.exit(1)
 
         print()
-        bar = BarAnimation(f"Instalando package {namePackage}...", "clasic", 4)
+        bar = BarAnimation(f"Instalando package {namePackage}...", "clasic")
         bar.new_valor(0)
 
         contenido = base64.b64decode(data["contenido_base64"])
