@@ -25,7 +25,7 @@
         "exec": "~/.local/bin",
 
         "url_servidores": [
-            "https://fastapi-production-c7c6.up.railway.app/"
+            "https://lpm-server-scew.onrender.com/"
         ]
     }
 }
