@@ -25,6 +25,7 @@
         "exec": "~/.local/bin/",
 
         "url_servidores": [
+            "http://localhost:8000",
             "https://lpm-server-scew.onrender.com/"
         ]
     }

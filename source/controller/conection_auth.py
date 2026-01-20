@@ -1,8 +1,11 @@
 import sys
+import json
+import time
 import requests
 
 # funciones internas de lpm
 from source.animations.message import message
+from source.controller.credentials.credential import return_userConfig
 from source.modules.chargate_config import returnURL_ServidoresConexion
 
 
@@ -129,5 +132,53 @@ def requestsDelivery(peticion, timeoutt, autorModule_):
 
     except requests.exceptions.RequestException as e:
         auxiliary_controller(True, e)
+
+    return data
+
+
+
+
+def descarga_files(url, localFile):
+    response = requests.get(url, stream=True)
+    total_length = int(response.headers.get('content-length', 0))
+    chunk_size = 1024
+    downloaded = 0
+    start_time = time.time()
+    with open(localFile, "wb") as f:
+        for chunk in response.iter_content(chunk_size=chunk_size):
+            if chunk:
+                f.write(chunk)
+                downloaded += len(chunk)
+                percent = downloaded / total_length * 100
+                elapsed_time = time.time() - start_time
+                speed = downloaded / 1024 / elapsed_time
+                sys.stdout.write(f"\r{' '*4}Descargando: {percent:.2f}% - {speed:.2f} KB/s")
+                sys.stdout.flush()
+    sys.stdout.write("")
+
+
+
+
+def get_firmaForCreador(name):
+    file_path = return_userConfig()
+    timeoutt = 10
+
+    with open(file_path, "r", encoding="utf-8") as f:
+        bd = json.load(f)
+
+    id_client = bd["credentials"]["id_client"]
+
+    try:
+        response = requests.post(
+            f"{URL_BASEDATA}/get/consult",
+            json={"client_id": id_client, "client_GetConsult": name},
+            timeout=timeoutt
+        )
+
+        response.raise_for_status()
+        data = response.json()
+
+    except requests.exceptions.RequestException as e:
+        print(e)
 
     return data

@@ -8,9 +8,10 @@ import zipfile
 from source.animations.message import message
 from source.animations.bar import BarAnimation
 from source.modules.system_controller import func_userConfig
+from source.modules.lpackage_manager import descompresor_lpackage
 from source.modules.chargate_config import returnLocal_RutaPackagesLPM
-from source.controller.conection_auth import autentificacion_server, requestsDelivery
 from source.modules.system_controller import add_package_at_funcConfig, add_path_package
+from source.controller.conection_auth import autentificacion_server, requestsDelivery, descarga_files
 
 
 
@@ -72,7 +73,6 @@ def main_install(id_client, token_client, package):
 
     destino = os.path.expanduser(f"{returnLocal_RutaPackagesLPM()}{namePackage}/{version_pkg}")
     os.makedirs(destino, exist_ok=True)
-    zip_path = os.path.join(destino, f"{namePackage}.zip")
 
 
     try:
@@ -90,37 +90,47 @@ def main_install(id_client, token_client, package):
             print(f"{' '*6}[ ERROR ] Fallo en la instalación")
             sys.exit(1)
 
+        lpackage_path = os.path.join(destino, f"{data.get('name_file')}")
+        huella_for_file = data.get("huella_HASH")
+
+
         print()
-        bar = BarAnimation(f"Instalando package {namePackage}...", "clasic")
-        bar.new_valor(0)
+        descarga_files(data.get('url_package'), lpackage_path)
+        time.sleep(1.5)
 
-        contenido = base64.b64decode(data["contenido_base64"])
+        bar = BarAnimation(f"Descomprimiendo {namePackage} [algoritmo lpackage1.3]...", "clasic")
+        bar.enable()
+        bar.new_valor(10)
 
-        with open(zip_path, "wb") as f:
-            f.write(contenido)
+        msg = descompresor_lpackage(lpackage_path, huella_for_file, destino)
+        time.sleep(1.5)
 
-        with zipfile.ZipFile(zip_path, "r") as zip_ref:
-            zip_ref.extractall(destino)
+        bar.log(msg)
+        time.sleep(1)
+        bar.new_valor(40)
 
-        os.remove(zip_path)
+        os.remove(lpackage_path)
 
-        bar.new_valor(60, "Cargando en lpm...")
+        time.sleep(1)
+        bar.new_valor(70)
 
         add_package_at_funcConfig(namePackage, version_pkg, main_pkg)
-
-        bar.new_valor(90, "Cargando en el path...")
-
         add_path_package(namePackage, version_pkg, main_pkg, venv_)
+        bar.log("Cargado en lpm...")
 
-        bar.new_valor(100, "Completado...")
 
+        time.sleep(1)
+        bar.new_valor(100)
+        bar.log("Proceso finalizado")
+        
         time.sleep(2)
+        bar.disable()
 
         print(
             f"\n{' '*4}[ OK ] Package instalado correctamente"
             f"\n{' '*4}[ OK ] Package añadido al path correctamente"
-            f"\n{' '*5}Name   : {data.get('nombre_archivo')}"
-            f"\n{' '*5}Size   : {data.get('tamaño_bytes')} bytes"
+            f"\n{' '*5}Name   : {data.get('url_package')}"
+            f"\n{' '*5}Size   : {data.get('name_file')} bytes"
         )
 
     except Exception as e:

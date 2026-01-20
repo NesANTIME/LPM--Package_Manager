@@ -52,7 +52,6 @@ def add_path_package(package_name, version, entrypoint, venv_plugins):
         subprocess.run([venv_python, "-m", "pip", "install", "--upgrade", *venv_plugins], check=True)
 
 
-
     launcher_path = os.path.join(bin_dir, package_name)
 
     content = f"""#!/bin/sh
